@@ -1,0 +1,26 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "註冊 Passkey";
+    Layout = "_Layout";
+}
+
+<form action="/mfa" method="post" id="register">
+    <div class="field">
+        <div class="control has-icons-left has-icons-right">
+            <input class="input" type="text" placeholder="使用者名稱" name="username" required>
+            <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+            </span>
+        </div>
+    </div>
+    <div class="field">
+        <div class="control">
+            <button class="button is-link">註冊 Passkey</button>
+        </div>
+    </div>
+</form>
+
+@section scripts {
+    <script src="~/js/usernameless.register.js" asp-append-version="true"></script>
+}

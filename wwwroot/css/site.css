@@ -1,0 +1,91 @@
+﻿html,body {
+    height: 100%;
+}
+body {
+    width: 1020px;
+    padding: 6px;
+    font-family: 微軟正黑體, Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.hello {
+    font-size: 14pt;
+    color: yellow;
+}
+
+header {
+    color: white;
+    font-size: 12pt;
+    text-align: right;  
+    padding-top: 12px;  
+    padding-right: 24px;
+    background-image: url(../images/eshop.png);
+    background-repeat: no-repeat;
+    height: 68px;
+}
+
+header .link-btn {
+    color: white;
+    font-size: 12pt;
+    margin: 2px;
+}
+
+header span {
+    margin: 0 3px;
+}
+
+header .login {
+    margin-left: 36px;
+}
+
+form {
+    margin: 12px;
+}
+form div {
+    margin: 10px 0;
+}
+
+div.home {
+    background-image: url(../images/eshop.png);
+    background-repeat: no-repeat;
+    background-position: 0 -68px;
+    width: 100%;;
+    height: 768px;
+}

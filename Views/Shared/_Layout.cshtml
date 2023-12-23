@@ -1,0 +1,57 @@
+﻿@{
+    string userId = Context.Session.GetString("UserId") ?? string.Empty;
+    bool isLogin = !string.IsNullOrEmpty(userId);
+}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    @await RenderSectionAsync("styles", required: false)
+</head>
+
+<body>
+    <header>
+        <span>最近看過</span>
+        <span>購物車</span>
+        <span>
+        <span>我的訂單</span>
+        <span>
+        <span>顧客中心</span>
+        <span>
+        <span>下載 APP</span>
+        <span class="login">
+        @if (!isLogin)
+        {
+            @Html.ActionLink("註冊", "Register", "Home", null, new { @class = "link-btn" })
+            <span>|</span>
+            @Html.ActionLink("登入", "Login", "Home", null, new { @class = "link-btn" })
+        }
+        else
+        {
+            
+            <span class="hello">你好，@userId</span>
+            <span>|</span>
+            @Html.ActionLink("登出", "Logout", "Home", null, new { @class = "link-btn" })
+        }
+        </span>
+    </header>
+    <div>
+        </span>
+
+
+
+        @RenderBody()
+    </div>
+    <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="~/lib/vue/dist/vue.global.prod.js"></script>
+    <script src="~/js/helpers.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("scripts", required: false)
+</body>
+
+</html>

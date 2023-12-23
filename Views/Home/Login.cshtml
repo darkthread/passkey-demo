@@ -1,0 +1,18 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<form action="/mfa" method="post" id="signin">
+    <div class="field">
+        <div class="control">
+            <button class="button is-link">使用 Passkey 登入</button>
+        </div>
+    </div>
+</form>
+
+@section scripts {
+    <script src="~/js/usernameless.login.js" asp-append-version="true"></script>
+}
