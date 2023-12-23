@@ -156,6 +156,8 @@ async function registerNewCredential(newCredential) {
         text: 'You\'ve registered successfully.',
         type: 'success',
         timer: 2000
+    }).then(() => {
+        window.location.href = "/";
     });
 
     // redirect to dashboard?

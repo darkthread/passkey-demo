@@ -10,7 +10,6 @@ namespace passkey_demo.Controllers
     public class Fido2Controller : Controller
     {
         private IFido2 _fido2;
-        public static IMetadataService _mds;
         public static DevelopmentFileStore DemoStorage = null!;
 
         public Fido2Controller(IFido2 fido2, DevelopmentFileStore demoStore)
@@ -54,7 +53,9 @@ namespace passkey_demo.Controllers
                 // 3. Create options
                 var authenticatorSelection = new AuthenticatorSelection
                 {
+                    // require resident key (passkey)
                     ResidentKey = residentKey.ToEnum<ResidentKeyRequirement>(),
+                    // require user verification
                     UserVerification = userVerification.ToEnum<UserVerificationRequirement>()
                 };
 
@@ -81,6 +82,12 @@ namespace passkey_demo.Controllers
             {
                 return Json(new CredentialCreateOptions { Status = "error", ErrorMessage = FormatException(e) });
             }
+        }
+
+        void SaveUserIdToSession(string username)
+        {
+            // TODO: Write a user context module to keep user session
+            HttpContext.Session.SetString("UserId", username);
         }
 
         [HttpPost]
@@ -124,12 +131,14 @@ namespace passkey_demo.Controllers
                     DevicePublicKeys = new List<byte[]>() { success.Result.DevicePublicKey }
                 });
 
+                SaveUserIdToSession(success.Result.User.Name);
+
                 // 4. return "ok" to the client
                 return Json(success);
             }
             catch (Exception e)
             {
-                return Json(new MakeNewCredentialResult(status: "error", errorMessage: FormatException(e), result: null));
+                return Json(new CredentialMakeResult("error", FormatException(e), null!));
             }
         }
 
@@ -208,8 +217,7 @@ namespace passkey_demo.Controllers
                 if (res.DevicePublicKey is not null)
                     creds.DevicePublicKeys.Add(res.DevicePublicKey);
 
-                // TODO: Write a user context module to keep user session
-                HttpContext.Session.SetString("UserId", DemoStorage.GetUserById(creds.UserId)?.Name);
+                SaveUserIdToSession(DemoStorage.GetUserById(creds.UserId)?.Name);
 
                 // 7. return OK to client
                 return Json(res);
