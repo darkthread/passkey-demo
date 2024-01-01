@@ -24,7 +24,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddFido2(options =>
 {
     options.ServerDomain = config["fido2:serverDomain"];
-    options.ServerName = "FIDO2 Test";
+    options.ServerName = "FIDO2 Demo";
     options.Origins = config.GetSection("fido2:origins").Get<HashSet<string>>();
     options.TimestampDriftTolerance = config.GetValue<int>("fido2:timestampDriftTolerance");
     options.MDSCacheDirPath = config["fido2:MDSCacheDirPath"];

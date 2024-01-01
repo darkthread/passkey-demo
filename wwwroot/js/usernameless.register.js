@@ -32,6 +32,7 @@ async function handleRegisterSubmit(event) {
     // send to server for registering
     let makeCredentialOptions;
     try {
+        // 將參數傳送到伺服器建立 makeCredentialOptions
         makeCredentialOptions = await fetchMakeCredentialOptions(data);
 
     } catch (e) {
@@ -39,7 +40,6 @@ async function handleRegisterSubmit(event) {
         let msg = "Something went really wrong";
         showErrorAlert(msg);
     }
-
 
     console.log("Credential Options Object", makeCredentialOptions);
 
@@ -51,10 +51,12 @@ async function handleRegisterSubmit(event) {
     }
 
     // Turn the challenge back into the accepted format of padded base64
+    // 伺服器隨機產生的 challenge
     makeCredentialOptions.challenge = coerceToArrayBuffer(makeCredentialOptions.challenge);
     // Turn ID into a UInt8Array Buffer for some reason
     makeCredentialOptions.user.id = coerceToArrayBuffer(makeCredentialOptions.user.id);
 
+    // 應排除的憑證(若先前已註冊過)
     makeCredentialOptions.excludeCredentials = makeCredentialOptions.excludeCredentials.map((c) => {
         c.id = coerceToArrayBuffer(c.id);
         return c;
@@ -75,11 +77,11 @@ async function handleRegisterSubmit(event) {
         focusCancel: false
     });
 
-
     console.log("Creating PublicKeyCredential...");
 
     let newCredential;
     try {
+        // 呼叫 WebAuthn API 建立公私鑰
         newCredential = await navigator.credentials.create({
             publicKey: makeCredentialOptions
         });
@@ -89,10 +91,10 @@ async function handleRegisterSubmit(event) {
         showErrorAlert(msg, e);
     }
 
-
     console.log("PublicKeyCredential Created", newCredential);
 
     try {
+        // 將公鑰傳送到伺服器註冊
         registerNewCredential(newCredential);
 
     } catch (e) {
@@ -157,6 +159,7 @@ async function registerNewCredential(newCredential) {
         type: 'success',
         timer: 2000
     }).then(() => {
+        // 註冊成功後，導回首頁
         window.location.href = "/";
     });
 

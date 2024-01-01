@@ -3,8 +3,6 @@
 async function handleSignInSubmit(event) {
     event.preventDefault();
 
-    //let username = this.username.value;
-
     // prepare form post data
     var formData = new FormData();
     //formData.append('username', username);
@@ -36,10 +34,12 @@ async function handleSignInSubmit(event) {
     }
 
     // todo: switch this to coercebase64
+    // 伺服器傳回隨機產生的 Challenge
     const challenge = makeAssertionOptions.challenge.replace(/-/g, "+").replace(/_/g, "/");
     makeAssertionOptions.challenge = Uint8Array.from(atob(challenge), c => c.charCodeAt(0));
 
     // fix escaping. Change this to coerce
+    // 伺服器回傳可接受的憑證清單
     makeAssertionOptions.allowCredentials.forEach(function (listItem) {
         var fixedId = listItem.id.replace(/\_/g, "/").replace(/\-/g, "+");
         listItem.id = Uint8Array.from(atob(fixedId), c => c.charCodeAt(0));
@@ -60,12 +60,14 @@ async function handleSignInSubmit(event) {
     // ask browser for credentials (browser will ask connected authenticators)
     let credential;
     try {
+        // 呼叫 WebAuthn API，取用憑證對 Challenge 進行簽章
         credential = await navigator.credentials.get({ publicKey: makeAssertionOptions })
     } catch (err) {
         showErrorAlert(err.message ? err.message : err);
     }
 
     try {
+        // 將憑證傳送到伺服器驗證
         await verifyAssertionWithServer(credential);
     } catch (e) {
         showErrorAlert("Could not verify assertion", e);
@@ -131,9 +133,8 @@ async function verifyAssertionWithServer(assertedCredential) {
         type: 'success',
         timer: 2000
     }).then(function () {
+        // 登入成功後，導回首頁
         window.location.href = "/";
     });
 
-    // redirect?
-    //window.location.href = "/dashboard/" + state.user.displayName;
 }
